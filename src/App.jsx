@@ -10,12 +10,21 @@ import profilePic from "./assets/profilepic.jpg";
 
 export default function App() {
   const [qrValue, setQrValue] = useState(Date.now().toString());
+  const [countdown, setCountdown] = useState(30);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setQrValue(Date.now().toString());
+      setCountdown(30); // Reset countdown when QR refreshes
     }, 30000); // refresh every 30 sec
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => (prev > 1 ? prev - 1 : 30));
+    }, 1000); // Update countdown every second
+    return () => clearInterval(timer);
   }, []);
 
   return (
@@ -55,7 +64,7 @@ export default function App() {
 
       {/* Refresh Text */}
       <p className="text-xs text-black text-center mt-0 w-48">
-        Refreshes Automatically after 30 Sec
+        Refreshes Automatically after {countdown} Sec
       </p>
 
       {/* Divider */}
